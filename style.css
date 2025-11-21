@@ -10,234 +10,139 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* === Кофейно-карамельная палитра === */
+/* === Кофейная палитра === */
 :root {
-  /* Основной градиент — карамель → мокко → латте */
-  --main-grad: linear-gradient(135deg, #d2691e 0%, #b5651d 40%, #8b4513 100%);
-  --accent-grad: linear-gradient(135deg, #6d4c41 0%, #5d4037 100%);
-  --card-bg: rgba(255, 248, 240, 0.96);
-  --card-border: rgba(210, 180, 140, 0.3);
-  --shadow: 0 14px 40px rgba(139, 69, 19, 0.22);
-  --shadow-hover: 0 24px 60px rgba(139, 69, 19, 0.35);
-  --text-dark: #3e2723;
-  --text-accent: #8b4513;
+  --main: linear-gradient(135deg, #d2691e 0%, #b5651d 40%, #8b4513 100%);
+  --accent: linear-gradient(135deg, #6d4c41 0%, #5d4037 100%);
+  --card: rgba(255,248,240,0.96);
+  --shadow: 0 14px 40px rgba(139,69,19,0.22);
+  --shadow-hov: 0 24px 60px rgba(139,69,19,0.35);
 }
 
-/* === Шапка — тёплый кофе с молоком === */
+/* === ШАПКА — теперь полностью кофейная === */
 .header {
-  position: fixed; top: 0; left: 0; right: 0; height: 68px;
-  background: var(--main-grad);
-  color: white;
-  display: flex; align-items: center; justify-content: center;
-  padding: 0 16px; z-index: 1000;
-  box-shadow: 0 12px 40px rgba(139,69,19,0.4);
-  border-bottom-left-radius: 32px; border-bottom-right-radius: 32px;
-  font-family: 'Comfortaa', cursive;
+  position:fixed; top:0; left:0; right:0; height:68px;
+  background: var(--main);
+  color:white; display:flex; align-items:center; justify-content:center;
+  padding:0 16px; z-index:1000;
+  box-shadow:0 12px 40px rgba(139,69,19,0.4);
+  border-bottom-left-radius:32px; border-bottom-right-radius:32px;
+  font-family:'Comfortaa', cursive;
 }
-.header-title { font-weight: 700; font-size: 23px; text-shadow: 0 3px 10px rgba(0,0,0,0.3); }
-.back-btn { position: absolute; left: 14px; background: none; border: none; color: white; font-size: 38px; cursor: pointer; }
+.header-title { font-weight:700; font-size:23px; text-shadow:0 3px 10px rgba(0,0,0,0.3); }
+
+/* Кнопка "Назад" — нормальный размер */
+.back-btn {
+  position:absolute; left:16px;
+  background:none; border:none; color:white;
+  font-size:28px;  /* было 38px — теперь аккуратно */
+  cursor:pointer;
+  width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center;
+}
 
 /* === Контейнер === */
-.container { padding: 18px; margin-top: 82px; padding-bottom: 180px; }
+.container { padding:18px; margin-top:82px; padding-bottom:180px; }
 
-/* === Сетка карточек === */
+/* === Сетка === */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 28px;
-  max-width: 1400px;
-  margin: 0 auto;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:28px; max-width:1400px; margin:0 auto;
 }
-@media (max-width: 768px) {
-  .grid { grid-template-columns: 1fr; gap: 22px; }
-  .container { padding-bottom: 200px; }
+@media (max-width:768px) {
+  .grid { grid-template-columns:1fr; gap:22px; }
+  .container { padding-bottom:220px; }
 }
 
-/* === Главные карточки категорий === */
-.big-card {
-  height: 160px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--card-bg);
-  backdrop-filter: blur(14px);
-  border: 3px solid var(--card-border);
-  border-radius: 34px;
-  color: var(--text-accent);
-  font-weight: 700;
-  font-size: 22px;
-  text-decoration: none;
-  box-shadow: var(--shadow);
-  transition: all .4s ease;
-  font-family: 'Comfortaa', cursive;
-  position: relative;
-  overflow: hidden;
+/* === Карточки категорий и блюд === */
+.big-card, .card {
+  background:var(--card); backdrop-filter:blur(14px);
+  border-radius:34px; overflow:hidden; box-shadow:var(--shadow);
+  transition:all .4s ease; position:relative; cursor:pointer;
 }
-.big-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--main-grad);
-  opacity: 0; transition: opacity .4s;
-  border-radius: 34px;
-}
-.big-card:hover::before { opacity: 0.12; }
-.big-card:hover {
-  transform: translateY(-14px) scale(1.03);
-  box-shadow: var(--shadow-hover);
-  color: #8b4513;
-}
+.big-card { height:160px; display:flex; align-items:center; justify-content:center;
+  border:3px solid rgba(210,180,140,0.3); font-size:22px; color:#8b4513; }
+.card img { width:100%; height:240px; object-fit:cover; }
+.card h3 { padding:20px 16px 12px; text-align:center; font-weight:700;
+  font-size:19px; color:#8b4513; font-family:'Comfortaa', cursive; }
 
-/* === Карточка блюда === */
-.card {
-  background: var(--card-bg);
-  backdrop-filter: blur(14px);
-  border-radius: 30px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: all .4s ease;
-  position: relative;
-  cursor: pointer;
+.card:hover, .big-card:hover {
+  transform:translateY(-14px); box-shadow:var(--shadow-hov);
 }
-.card:hover {
-  transform: translateY(-14px);
-  box-shadow: var(--shadow-hover);
-}
-.card img {
-  width: 100%; height: 240px; object-fit: cover;
-  transition: transform .6s ease;
-}
-.card:hover img { transform: scale(1.1); }
-.card h3 {
-  padding: 20px 16px 12px;
-  text-align: center;
-  font-weight: 700;
-  font-size: 19px;
-  color: var(--text-accent);
-  font-family: 'Comfortaa', cursive;
-}
+.card:hover img { transform:scale(1.1); }
 
-/* === Кнопка "В меню" — кофейная с градиентом === */
+/* Кнопка "В меню" */
 .card .hover-btn {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: var(--main-grad);
-  color: white;
-  border: none;
-  padding: 19px;
-  font-size: 17px;
-  font-weight: 700;
-  cursor: pointer;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-  opacity: 0;
-  transform: translateY(15px);
-  transition: all .4s ease;
-  pointer-events: none;
-  font-family: 'Comfortaa', cursive;
+  position:absolute; bottom:0; left:0; right:0;
+  background:var(--main); color:white; border:none;
+  padding:19px; font-size:17px; font-weight:700; cursor:pointer;
+  border-bottom-left-radius:30px; border-bottom-right-radius:30px;
+  opacity:0; transform:translateY(15px); transition:all .4s;
+  pointer-events:none; font-family:'Comfortaa', cursive;
 }
-.card:hover .hover-btn {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: all;
-}
-.card .hover-btn:hover { background: var(--accent-grad); }
-
-/* На телефоне — большая кнопка */
-@media (max-width: 768px) {
-  .card .hover-btn {
-    opacity: 1;
-    position: relative;
-    margin-top: 16px;
-    border-radius: 50px;
-    transform: none;
-    padding: 18px;
-    font-size: 18px;
-  }
+.card:hover .hover-btn { opacity:1; transform:none; pointer-events:all; }
+.card .hover-btn:hover { background:var(--accent); }
+@media (max-width:768px) {
+  .card .hover-btn { opacity:1; position:relative; margin-top:16px;
+    border-radius:50px; transform:none; padding:20px; font-size:18px; }
 }
 
-/* === Кнопки (Войти, Добавить блюдо, Продукты) === */
-#add-recipe-btn, #login-btn, .products-btn {
-  background: var(--main-grad);
-  color: white;
-  border: none;
-  padding: 20px 44px;
-  border-radius: 50px;
-  font-size: 18px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 12px 35px rgba(139,69,19,0.4);
-  transition: all .3s;
-  font-family: 'Comfortaa', cursive;
-  min-width: 220px;
-}
-#add-recipe-btn:hover, #login-btn:hover, .products-btn:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 18px 45px rgba(139,69,19,0.5);
-  background: var(--accent-grad);
-}
-
-/* Круглая кнопка "Меню" */
+/* === КНОПКИ "Домой" и "Меню" — теперь большие и красивые === */
 .cart-btn {
-  position: fixed; bottom: 90px; right: 18px;
-  background: var(--main-grad);
-  color: white;
-  width: 72px; height: 72px;
-  border-radius: 50%;
-  font-size: 34px;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 14px 40px rgba(139,69,19,0.45);
-  z-index: 999;
+  position:fixed; bottom:100px; right:20px;
+  background:var(--main); color:white;
+  width:76px; height:76px; border-radius:50%;
+  font-size:36px; border:none; cursor:pointer;
+  box-shadow:0 14px 40px rgba(139,69,19,0.5);
+  z-index:999; font-family:'Comfortaa', cursive;
+  display:flex; align-items:center; justify-content:center;
 }
 
-/* Нижняя панель — кнопка "Продукты" теперь огромная и красивая */
+/* === НИЖНЯЯ ПАНЕЛЬ — кнопка "Продукты" огромная и в самом низу === */
 .bottom-bar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: rgba(255,248,240,0.97);
-  backdrop-filter: blur(12px);
-  padding: 16px;
-  box-shadow: 0 -8px 40px rgba(139,69,19,0.25);
-  z-index: 999;
+  position:fixed; bottom:0; left:0; right:0;
+  background:rgba(255,248,240,0.98); backdrop-filter:blur(16px);
+  padding:20px; box-shadow:0 -10px 40px rgba(139,69,19,0.3);
+  z-index:999;
 }
 .products-btn {
-  padding: 22px !important;
-  font-size: 19px !important;
-  min-height: 68px;
+  width:100%; padding:24px !important;
+  border-radius:50px; font-size:20px !important; font-weight:700;
+  background:var(--main); color:white;
+  box-shadow:0 12px 35px rgba(139,69,19,0.45);
+  font-family:'Comfortaa', cursive;
+}
+.products-btn:active { transform:translateY(2px); }
+
+/* === Кнопка входа и добавления блюда === */
+#login-btn, #add-recipe-btn {
+  background:var(--main); color:white; border:none;
+  padding:22px 50px; border-radius:50px; font-size:19px; font-weight:700;
+  cursor:pointer; box-shadow:0 14px 40px rgba(139,69,19,0.45);
+  transition:all .3s; font-family:'Comfortaa', cursive;
+}
+#login-btn:hover, #add-recipe-btn:hover {
+  transform:translateY(-6px); box-shadow:0 20px 50px rgba(139,69,19,0.55);
+  background:var(--accent);
 }
 
-/* === Поле ввода имени === */
+/* Поле ввода имени */
 #username {
-  padding: 22px;
-  width: 88%;
-  max-width: 380px;
-  margin-bottom: 28px;
-  border-radius: 50px;
-  border: 3px solid #d2b48c;
-  font-size: 19px;
-  text-align: center;
-  outline: none;
-  background: white;
-  box-shadow: 0 10px 30px rgba(210,180,140,0.2);
-  transition: all .3s;
+  padding:22px; width:88%; max-width:380px; margin-bottom:28px;
+  border-radius:50px; border:3px solid #d2b48c; font-size:19px;
+  text-align:center; background:white; box-shadow:0 10px 30px rgba(210,180,140,0.2);
 }
 #username:focus {
-  border-color: #8b4513;
-  box-shadow: 0 0 0 8px rgba(139,69,19,0.18);
-  transform: scale(1.03);
+  border-color:#8b4513; box-shadow:0 0 0 8px rgba(139,69,19,0.2);
 }
 
-/* === Остальные элементы === */
+/* Остальное */
 .menu-item, .products-section {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  padding: 22px;
-  border-radius: 28px;
-  margin: 16px 0;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--card-border);
+  background:var(--card); backdrop-filter:blur(12px);
+  padding:24px; border-radius:30px; margin:16px 0;
+  box-shadow:var(--shadow); border:1px solid rgba(210,180,140,0.25);
 }
-.checkbox.checked {
-  background: var(--main-grad);
-  box-shadow: 0 0 25px rgba(139,69,19,0.4);
-}
-.bold { font-weight: 700; font-size: 21px; color: #8b4513; font-family: 'Comfortaa', cursive; }
-.medium { line-height: 1.9; font-size: 17px; color: #5d4037; }
-
-/* Выделение текста */
-::selection { background: #d2691e; color: white; }
+.checkbox.checked { background:var(--main); box-shadow:0 0 25px rgba(139,69,19,0.4); }
+.bold { font-weight:700; font-size:21px; color:#8b4513; font-family:'Comfortaa', cursive; }
+.medium { line-height:1.9; font-size:17px; color:#5d4037; }
+::selection { background:#d2691e; color:white; }
