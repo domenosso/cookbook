@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Geologica', sans-serif;
+  background: #fdfdfd;
+  color: #2d3436;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 100vh;
+}
+
+/* === Шапка === */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  background: #8e44ad;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(142,68,173,.25);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.header-title {
+  font-weight: 600;
+  font-size: 19px;
+}
+
+.back-btn {
+  position: absolute;
+  left: 12px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+/* === Основной контейнер === */
+.container {
+  padding: 16px;
+  margin-top: 70px;
+  padding-bottom: 140px;
+}
+
+/* === Сетка карточек === */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; gap: 18px; }
+  .container { padding: 12px; padding-bottom: 160px; }
+}
+
+/* === Главные карточки категорий === */
+.big-card {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f5ff;
+  border: 2px solid #8e44ad;
+  border-radius: 24px;
+  color: #8e44ad;
+  font-weight: 600;
+  font-size: 18px;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(142,68,173,.1);
+  transition: all .25s;
+}
+
+.big-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(142,68,173,.2);
+}
+
+/* === Карточка блюда === */
+.card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(142,68,173,.12);
+  transition: all .25s;
+  position: relative;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(142,68,173,.22);
+}
+
+.card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.card h3 {
+  padding: 16px 16px 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 17px;
+  color: #333;
+}
+
+/* === Кнопка "В меню" — появляется только при наведении === */
+.card .hover-btn {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  width: 100%;
+  background: #8e44ad;
+  color: white;
+  border: none;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  opacity: 0;
+  transition: opacity .3s ease;
+  pointer-events: none;
+}
+
+.card:hover .hover-btn {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.card .hover-btn:hover {
+  background: #732d91;
+}
+
+/* На мобильных — кнопка всегда видна */
+@media (max-width: 768px) {
+  .card .hover-btn {
+    opacity: 1;
+    position: relative;
+    margin-top: 12px;
+    border-radius: 50px;
+    pointer-events: all;
+  }
+}
+
+/* === Кнопка "+ Добавить блюдо" (Наталья) === */
+#add-recipe-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #8e44ad;
+  color: white;
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 8px 25px rgba(142,68,173,.4);
+  border: none;
+  cursor: pointer;
+  z-index: 998;
+  display: none;
+}
+
+/* === Круглая кнопка "Меню" === */
+.cart-btn {
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  background: #8e44ad;
+  color: white;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-size: 30px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(142,68,173,.4);
+  z-index: 999;
+}
+
+/* === Элементы меню === */
+.menu-item {
+  background: white;
+  padding: 18px;
+  border-radius: 20px;
+  margin: 12px 0;
+  box-shadow: 0 4px 15px rgba(142,68,173,.08);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.checkbox {
+  width: 28px;
+  height: 28px;
+  border: 2px solid #8e44ad;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: transparent;
+  transition: all .2s;
+}
+
+.checkbox.checked {
+  background: #8e44ad;
+  color: white;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* === Нижняя панель для Натальи === */
+.bottom-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: white;
+  padding: 12px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.1);
+  display: flex;
+  gap: 12px;
+  z-index: 999;
+}
+
+.bottom-btn {
+  flex: 1;
+  padding: 16px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.products-btn {
+  background: #8e44ad;
+  color: white;
+}
+
+/* === Страница продуктов === */
+.products-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .products-grid { grid-template-columns: 1fr; }
+}
+
+.products-section {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(142,68,173,.08);
+}
+
+.products-section h3 {
+  color: #8e44ad;
+  margin-bottom: 16px;
+  font-size: 19px;
+  text-align: center;
+}
+
+/* === Страница рецепта === */
+.recipe-img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.bold {
+  font-weight: 700;
+  font-size: 19px;
+  margin: 20px 0 10px;
+  color: #6c2aa1;
+}
+
+.medium {
+  font-weight: 500;
+  line-height: 1.8;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* === Экран входа (самая красивая кнопка!) === */
+#login-btn {
+  background: #8e44ad;
+  color: white;
+  border: none;
+  padding: 18px 60px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(142, 68, 173, 0.4);
+  transition: all 0.3s;
+  min-width: 200px;
+}
+
+#login-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(142, 68, 173, 0.5);
+}
+
+#login-btn:active {
+  transform: translateY(0);
+}
+
+#username {
+  padding: 18px;
+  width: 85%;
+  max-width: 340px;
+  margin-bottom: 20px;
+  border-radius: 50px;
+  border: 2px solid #ddd;
+  font-size: 18px;
+  text-align: center;
+  outline: none;
+  transition: all .3s;
+}
+
+#username:focus {
+  border-color: #8e44ad;
+  box-shadow: 0 0 0 4px rgba(142, 68, 173, 0.15);
+}
+
+/* === Формы добавления рецепта === */
+.input {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 16px;
+  border: 1px solid #ddd;
+  font-family: inherit;
+  font-size: 15px;
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Добавить блюдо</title>
+  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">Назад</button>
+    <div class="header-title">Новое блюдо</div>
+  </div>
+
+  <div class="container" style="margin-top:80px;">
+    <input type="text" id="name" placeholder="Название блюда" class="input"><br>
+    <select id="category" class="input">
+      <option>салаты</option><option>основные</option><option>супы</option>
+      <option>закуски</option><option>выпечка</option><option>напитки</option>
+    </select><br>
+    <textarea id="ingredients" placeholder="Ингредиенты (по одному на строку)" class="input" style "height:120px;"></textarea><br>
+    <textarea id="instructions" placeholder="Как готовить" class="input" style="height:140px;"></textarea><br>
+    <input type="text" id="image" placeholder="Ссылка на фото" value="images/default.jpg" class="input"><br>
+    <button class="add-to-cart" onclick="saveRecipe()" style="width:100%; margin-top:20px;">Сохранить</button>
+  </div>
+
+  <style>.input { width:100%; padding:14px; margin:10px 0; border-radius:16px; border:1px solid #ddd; font-family:inherit; font-size:15px; }</style>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user?.isAdmin) { alert("Только Наталья!"); history.back(); }
+
+    function saveRecipe() {
+      const name = document.getElementById('name').value.trim();
+      if (!name) return alert("Введите название!");
+      const id = Date.now().toString();
+      db.ref('recipes/' + id).set({
+        id, name,
+        category: document.getElementById('category').value,
+        ingredients: document.getElementById('ingredients').value.split('\n').map(s=>s.trim()).filter(Boolean),
+        instructions: document.getElementById('instructions').value.trim(),
+        image: document.getElementById('image').value || 'images/default.jpg',
+        addedBy: user.name
+      }).then(() => { alert("Добавлено!"); history.back(); });
+    }
+  </script>
+</body>
+</html>

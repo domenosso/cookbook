@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Семейное меню</title>
+  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+
+  <!-- Экран входа -->
+  <div id="login-screen" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:#fdfdfd;">
+    <h2 style="margin-bottom:40px; color:#8e44ad; font-size:28px; font-weight:600;">Семейное меню</h2>
+    
+    <input type="text" id="username" placeholder="Введи своё имя" 
+           style="padding:18px; width:85%; max-width:340px; margin-bottom:20px; 
+                  border-radius:50px; border:2px solid #ddd; font-size:18px; 
+                  text-align:center; outline:none; transition:border .3s;">
+    
+    <button id="login-btn" onclick="login()">
+      Войти
+    </button>
+  </div>
+
+  <!-- Основное приложение -->
+  <div id="app" style="display:none;">
+    <div class="header">
+      <div class="header-title">Семейное меню</div>
+      <button class="cart-btn" onclick="location.href='menu.html'">Меню</button>
+    </div>
+
+    <div class="container grid" style="grid-template-columns: repeat(2,1fr); max-width:600px; margin:90px auto 120px;">
+      <a href="category.html?cat=салаты" class="card big-card">Салаты</a>
+      <a href="category.html?cat=основные" class="card big-card">Основные</a>
+      <a href="category.html?cat=супы" class="card big-card">Супы</a>
+      <a href="category.html?cat=закуски" class="card big-card">Закуски</a>
+      <a href="category.html?cat=выпечка" class="card big-card">Выпечка</a>
+      <a href="category.html?cat=напитки" class="card big-card">Напитки</a>
+    </div>
+
+    <button id="add-recipe-btn" onclick="location.href='add-recipe.html'">
+      + Добавить блюдо (Наталья)
+    </button>
+  </div>
+
+  <script>
+    let currentUser = null;
+
+    function login() {
+      const name = document.getElementById('username').value.trim();
+      if (!name) return alert("Введите имя!");
+
+      currentUser = { name: name, isAdmin: name.toLowerCase() === "наталья" };
+      localStorage.setItem('user', JSON.stringify(currentUser));
+
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      if (currentUser.isAdmin) {
+        document.getElementById('add-recipe-btn').style.display = 'block';
+      }
+    }
+
+    window.onload = () => {
+      const saved = localStorage.getItem('user');
+      if (saved) {
+        currentUser = JSON.parse(saved);
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        if (currentUser.isAdmin) {
+          document.getElementById('add-recipe-btn').style.display = 'block';
+        }
+      }
+    };
+  </script>
+</body>
+</html>

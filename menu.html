@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Меню на неделю</title>
+  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">Назад</button>
+    <div class="header-title">Меню на неделю</div>
+  </div>
+
+  <div class="container" id="menu-list" style="margin-top:80px;">
+    <p style="text-align:center; color:#bbb; margin-top:80px;">Меню пусто</p>
+  </div>
+
+  <div class="bottom-bar" id="natalya-bar" style="display:none;">
+    <button class="bottom-btn products-btn" onclick="location.href='products.html'">Продукты</button>
+  </div>
+
+  <button class="cart-btn" onclick="location.href='index.html'">Домой</button>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const isNatalya = user.isAdmin;
+    if (isNatalya) document.getElementById('natalya-bar').style.display = 'flex';
+
+    const selectedRef = isNatalya ? db.ref('selectedMenuItems') : null;
+
+    function renderMenu() {
+      db.ref('menu').orderByChild('addedAt').on('value', snap => {
+        const menu = snap.val() || {};
+        const list = document.getElementById('menu-list');
+        list.innerHTML = Object.keys(menu).length === 0 ? '<p style="text-align:center; color:#bbb; margin-top:80px;">Меню пусто</p>' : '';
+
+        selectedRef?.once('value').then(selSnap => {
+          const selected = selSnap?.val() || {};
+          db.ref('recipes').once('value').then(rs => {
+            const recipes = rs.val() || {};
+            Object.keys(menu).reverse().forEach(key => {
+              const item = menu[key];
+              const recipe = recipes[item.recipeId];
+              if (!recipe) return;
+
+              const isSelected = selected[key];
+              const div = document.createElement('div');
+              div.className = 'menu-item';
+              div.innerHTML = `
+                ${isNatalya ? `<div class="checkbox ${isSelected ? 'checked' : ''}" onclick="toggleSelect('${key}', this)">${isSelected ? '✓' : ''}</div>` : ''}
+                <div onclick="location.href='recipe.html?id=${recipe.id}'" style="flex:1;cursor:pointer;">
+                  <strong>${recipe.name}</strong><br>
+                  <small style="color:#8e44ad;">Добавил: ${item.addedBy}</small>
+                </div>
+                ${item.addedBy === user.name ? `<button class="delete-btn" onclick="event.stopPropagation(); db.ref('menu/${key}').remove();">×</button>` : ''}
+              `;
+              list.appendChild(div);
+            });
+          });
+        });
+      });
+    }
+
+    window.toggleSelect = function(key, el) {
+      if (!isNatalya) return;
+      const path = `selectedMenuItems/${key}`;
+      if (el.classList.contains('checked')) {
+        db.ref(path).remove();
+        el.classList.remove('checked'); el.textContent = '';
+      } else {
+        db.ref(path).set(true);
+        el.classList.add('checked'); el.textContent = '✓';
+      }
+    };
+
+    renderMenu();
+  </script>
+</body>
+</html>

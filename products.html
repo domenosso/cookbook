@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список продуктов</title>
+  <link rel="icon" href="icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">Назад</button>
+    <div class="header-title">Список продуктов</div>
+  </div>
+
+  <div class="container">
+    <div class="products-grid">
+      <div class="products-section">
+        <h3>Отмеченные блюда</h3>
+        <div id="selected-dishes"></div>
+      </div>
+      <div class="products-section">
+        <h3>Все продукты</h3>
+        <div id="all-products" style="line-height:1.9; font-size:16px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.isAdmin) { alert("Только Наталья!"); history.back(); return; }
+
+    const allIngredients = new Set();
+
+    db.ref('selectedMenuItems').once('value').then(selSnap => {
+      const selected = selSnap.val() || {};
+      const keys = Object.keys(selected);
+
+      if (keys.length === 0) {
+        document.getElementById('selected-dishes').innerHTML = '<p style="color:#bbb;text-align:center;padding:30px;">Нет отмеченных блюд</p>';
+        document.getElementById('all-products').innerHTML = '<p style="color:#bbb;text-align:center;">Нет продуктов</p>';
+        return;
+      }
+
+      Promise.all([db.ref('menu').once('value'), db.ref('recipes').once('value')]).then(([m, r]) => {
+        const menu = m.val() || {};
+        const recipes = r.val() || {};
+        const div = document.getElementById('selected-dishes');
+
+        keys.forEach(k => {
+          if (!menu[k]) return;
+          const recipe = recipes[menu[k].recipeId];
+          if (!recipe) return;
+
+          recipe.ingredients.forEach(i => {
+            let clean = i.trim().replace(/^[-•*]\s*/, '').split(' – ')[0].split(' - ')[0].split(',')[0].split(' (')[0].trim();
+            if (clean) allIngredients.add(clean);
+          });
+
+          const el = document.createElement('div');
+          el.style.marginBottom = "28px";
+          el.innerHTML = `<strong style="color:#8e44ad;font-size:18px;">${recipe.name}</strong><br><br>
+                          <div style="color:#444;line-height:1.8;">${recipe.ingredients.map(i=>'• '+i).join('<br>')}</div>`;
+          div.appendChild(el);
+        });
+
+        const sorted = Array.from(allIngredients).sort((a,b)=>a.localeCompare(b));
+        document.getElementById('all-products').innerHTML = sorted.map(p=>`• ${p}`).join('<br>');
+      });
+    });
+  </script>
+</body>
+</html>
