@@ -1,300 +1,243 @@
 @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Comfortaa:wght@600;700&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
   font-family: 'Geologica', sans-serif;
-  background: linear-gradient(135deg, #fff8f0 0%, #fff5e6 100%);
+  background: linear-gradient(135deg, #f9f0e8 0%, #f5e6d8 50%, #efe0d0 100%);
   color: #3e2723;
   min-height: 100vh;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* === Основной градиентный акцент === */
+/* === Кофейно-карамельная палитра === */
 :root {
-  --main: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ff8c42 100%);
-  --accent: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
-  --card-bg: rgba(255, 255, 255, 0.92);
-  --shadow: 0 12px 35px rgba(255, 107, 53, 0.18);
-  --shadow-hover: 0 20px 50px rgba(255, 107, 53, 0.3);
+  /* Основной градиент — карамель → мокко → латте */
+  --main-grad: linear-gradient(135deg, #d2691e 0%, #b5651d 40%, #8b4513 100%);
+  --accent-grad: linear-gradient(135deg, #6d4c41 0%, #5d4037 100%);
+  --card-bg: rgba(255, 248, 240, 0.96);
+  --card-border: rgba(210, 180, 140, 0.3);
+  --shadow: 0 14px 40px rgba(139, 69, 19, 0.22);
+  --shadow-hover: 0 24px 60px rgba(139, 69, 19, 0.35);
+  --text-dark: #3e2723;
+  --text-accent: #8b4513;
 }
 
-/* === Шапка — сочный градиент === */
+/* === Шапка — тёплый кофе с молоком === */
 .header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 62px;
-  background: var(--main);
+  position: fixed; top: 0; left: 0; right: 0; height: 68px;
+  background: var(--main-grad);
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 16px;
-  z-index: 1000;
-  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.3);
-  border-bottom-left-radius: 28px;
-  border-bottom-right-radius: 28px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 16px; z-index: 1000;
+  box-shadow: 0 12px 40px rgba(139,69,19,0.4);
+  border-bottom-left-radius: 32px; border-bottom-right-radius: 32px;
   font-family: 'Comfortaa', cursive;
 }
-
-.header-title {
-  font-weight: 700;
-  font-size: 21px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-.back-btn {
-  position: absolute;
-  left: 12px;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 34px;
-  cursor: pointer;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-}
+.header-title { font-weight: 700; font-size: 23px; text-shadow: 0 3px 10px rgba(0,0,0,0.3); }
+.back-btn { position: absolute; left: 14px; background: none; border: none; color: white; font-size: 38px; cursor: pointer; }
 
 /* === Контейнер === */
-.container {
-  padding: 16px;
-  margin-top: 76px;
-  padding-bottom: 150px;
-}
+.container { padding: 18px; margin-top: 82px; padding-bottom: 180px; }
 
-/* === Сетка === */
+/* === Сетка карточек === */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+  gap: 28px;
   max-width: 1400px;
   margin: 0 auto;
 }
-
 @media (max-width: 768px) {
-  .grid { grid-template-columns: 1fr; gap: 20px; }
-  .container { padding-bottom: 170px; }
+  .grid { grid-template-columns: 1fr; gap: 22px; }
+  .container { padding-bottom: 200px; }
 }
 
-/* === Категории на главной === */
+/* === Главные карточки категорий === */
 .big-card {
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 160px;
+  display: flex; align-items: center; justify-content: center;
   background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  border: 3px solid transparent;
-  border-radius: 28px;
-  color: #d84315;
+  backdrop-filter: blur(14px);
+  border: 3px solid var(--card-border);
+  border-radius: 34px;
+  color: var(--text-accent);
   font-weight: 700;
-  font-size: 20px;
+  font-size: 22px;
   text-decoration: none;
   box-shadow: var(--shadow);
-  transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all .4s ease;
   font-family: 'Comfortaa', cursive;
-  background-clip: padding-box;
   position: relative;
   overflow: hidden;
 }
-
 .big-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 3px;
-  background: var(--main);
-  border-radius: 28px;
-  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: destination-out;
+  content: ''; position: absolute; inset: 0;
+  background: var(--main-grad);
+  opacity: 0; transition: opacity .4s;
+  border-radius: 34px;
 }
-
+.big-card:hover::before { opacity: 0.12; }
 .big-card:hover {
-  transform: translateY(-12px) scale(1.02);
+  transform: translateY(-14px) scale(1.03);
   box-shadow: var(--shadow-hover);
+  color: #8b4513;
 }
 
 /* === Карточка блюда === */
 .card {
   background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  border-radius: 26px;
+  backdrop-filter: blur(14px);
+  border-radius: 30px;
   overflow: hidden;
   box-shadow: var(--shadow);
   transition: all .4s ease;
   position: relative;
   cursor: pointer;
 }
-
 .card:hover {
-  transform: translateY(-12px);
+  transform: translateY(-14px);
   box-shadow: var(--shadow-hover);
 }
-
 .card img {
-  width: 100%;
-  height: 230px;
-  object-fit: cover;
-  transition: transform .5s;
+  width: 100%; height: 240px; object-fit: cover;
+  transition: transform .6s ease;
 }
-
-.card:hover img {
-  transform: scale(1.08);
-}
-
+.card:hover img { transform: scale(1.1); }
 .card h3 {
-  padding: 18px 16px 10px;
+  padding: 20px 16px 12px;
   text-align: center;
   font-weight: 700;
-  font-size: 18px;
-  color: #d84315;
+  font-size: 19px;
+  color: var(--text-accent);
   font-family: 'Comfortaa', cursive;
 }
 
-/* === Кнопка "В меню" — сочная и анимированная === */
+/* === Кнопка "В меню" — кофейная с градиентом === */
 .card .hover-btn {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  width: 100%;
-  background: var(--main);
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--main-grad);
   color: white;
   border: none;
-  padding: 18px;
+  padding: 19px;
   font-size: 17px;
   font-weight: 700;
   cursor: pointer;
-  border-bottom-left-radius: 26px;
-  border-bottom-right-radius: 26px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(15px);
   transition: all .4s ease;
   pointer-events: none;
   font-family: 'Comfortaa', cursive;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
-
 .card:hover .hover-btn {
   opacity: 1;
   transform: translateY(0);
   pointer-events: all;
 }
+.card .hover-btn:hover { background: var(--accent-grad); }
 
-.card .hover-btn:hover {
-  background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
-}
-
-/* Мобильные */
+/* На телефоне — большая кнопка */
 @media (max-width: 768px) {
   .card .hover-btn {
     opacity: 1;
     position: relative;
-    transform: none;
-    margin-top: 14px;
+    margin-top: 16px;
     border-radius: 50px;
-    pointer-events: all;
+    transform: none;
+    padding: 18px;
+    font-size: 18px;
   }
 }
 
-/* === Кнопки === */
-#add-recipe-btn, #login-btn {
-  background: var(--main);
+/* === Кнопки (Войти, Добавить блюдо, Продукты) === */
+#add-recipe-btn, #login-btn, .products-btn {
+  background: var(--main-grad);
   color: white;
   border: none;
-  padding: 18px 40px;
+  padding: 20px 44px;
   border-radius: 50px;
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 12px 35px rgba(139,69,19,0.4);
   transition: all .3s;
   font-family: 'Comfortaa', cursive;
-  backdrop-filter: blur(10px);
+  min-width: 220px;
+}
+#add-recipe-btn:hover, #login-btn:hover, .products-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 45px rgba(139,69,19,0.5);
+  background: var(--accent-grad);
 }
 
-#add-recipe-btn:hover, #login-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(255, 107, 53, 0.5);
-  background: var(--accent);
-}
-
+/* Круглая кнопка "Меню" */
 .cart-btn {
-  position: fixed;
-  bottom: 80px;
-  right: 16px;
-  background: var(--main);
+  position: fixed; bottom: 90px; right: 18px;
+  background: var(--main-grad);
   color: white;
-  width: 68px;
-  height: 68px;
+  width: 72px; height: 72px;
   border-radius: 50%;
-  font-size: 32px;
+  font-size: 34px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 12px 35px rgba(255, 107, 53, 0.45);
+  box-shadow: 0 14px 40px rgba(139,69,19,0.45);
   z-index: 999;
-  animation: pulse 3s infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 12px 35px rgba(255, 107, 53, 0.45); }
-  50% { box-shadow: 0 12px 45px rgba(255, 107, 53, 0.65); }
-}
-
-/* === Меню и продукты === */
-.menu-item, .products-section {
-  background: var(--card-bg);
+/* Нижняя панель — кнопка "Продукты" теперь огромная и красивая */
+.bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(255,248,240,0.97);
   backdrop-filter: blur(12px);
-  padding: 20px;
-  border-radius: 24px;
-  margin: 14px 0;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(255, 107, 53, 0.1);
+  padding: 16px;
+  box-shadow: 0 -8px 40px rgba(139,69,19,0.25);
+  z-index: 999;
 }
-
-.checkbox.checked {
-  background: var(--main);
-  color: white;
-  box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
-}
-
 .products-btn {
-  background: var(--main);
-  color: white;
-  font-weight: 700;
-  font-family: 'Comfortaa', cursive;
+  padding: 22px !important;
+  font-size: 19px !important;
+  min-height: 68px;
 }
 
-/* === Поле ввода на входе === */
+/* === Поле ввода имени === */
 #username {
-  padding: 20px;
+  padding: 22px;
   width: 88%;
-  max-width: 360px;
-  margin-bottom: 24px;
+  max-width: 380px;
+  margin-bottom: 28px;
   border-radius: 50px;
-  border: 3px solid #ffccbc;
+  border: 3px solid #d2b48c;
   font-size: 19px;
   text-align: center;
   outline: none;
-  transition: all .3s;
   background: white;
-  box-shadow: 0 8px 25px rgba(255, 152, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(210,180,140,0.2);
+  transition: all .3s;
 }
-
 #username:focus {
-  border-color: #ff6b35;
-  box-shadow: 0 0 0 6px rgba(255, 107, 53, 0.2);
-  transform: scale(1.02);
+  border-color: #8b4513;
+  box-shadow: 0 0 0 8px rgba(139,69,19,0.18);
+  transform: scale(1.03);
 }
 
-/* === Текст === */
-.bold { font-weight: 700; font-size: 20px; color: #d84315; font-family: 'Comfortaa', cursive; }
-.medium { line-height: 1.9; font-size: 16.5px; color: #5d4037; }
-
-/* === Финальный штрих === */
-::selection {
-  background: #ff6b35;
-  color: white;
+/* === Остальные элементы === */
+.menu-item, .products-section {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  padding: 22px;
+  border-radius: 28px;
+  margin: 16px 0;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--card-border);
 }
+.checkbox.checked {
+  background: var(--main-grad);
+  box-shadow: 0 0 25px rgba(139,69,19,0.4);
+}
+.bold { font-weight: 700; font-size: 21px; color: #8b4513; font-family: 'Comfortaa', cursive; }
+.medium { line-height: 1.9; font-size: 17px; color: #5d4037; }
+
+/* Выделение текста */
+::selection { background: #d2691e; color: white; }
